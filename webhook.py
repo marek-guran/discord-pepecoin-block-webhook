@@ -1,7 +1,7 @@
 import requests
 import json
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 # Define your Discord webhook URL
@@ -92,12 +92,18 @@ async def main():
                     # Convert block timestamp to UTC
                     block_timestamp = block_info_data['time']
                     formatted_time = f"<t:{block_info_data['time']}:R>"
-                    # Get the first mined block's timestamp
-                    first_mined_block_timestamp = next(iter(mined_blocks.values()), None)
                     
-                    # Calculate the number of blocks mined today
-                    if first_mined_block_timestamp is not None:
-                        blocks_mined_today = block_count - int(list(mined_blocks.keys())[0])
+                    # Get the timestamp of the first mined block today
+                    today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
+                    
+                    # Find the block counts of all blocks mined today
+                    blocks_today = [block for block, timestamp in mined_blocks.items() if timestamp >= today_start]
+                    
+                    # If there are blocks mined today, calculate the number of blocks mined today
+                    if blocks_today:
+                        first_block_today = min(map(int, blocks_today))
+                        last_block_today = max(map(int, blocks_today))
+                        blocks_mined_today = last_block_today - first_block_today
                     else:
                         blocks_mined_today = 0
                     
