@@ -1,8 +1,7 @@
 import requests
 import json
 import asyncio
-from datetime import datetime, timedelta
-import pytz
+from datetime import datetime
 
 # Define your Discord webhook URL
 WEBHOOK_URL = 'WEBHOOK_URL'
@@ -36,7 +35,10 @@ async def send_to_discord(message):
             {
                 "title": "New Block Mined!",
                 "description": message,
-                "color": 39232  # Green color
+                "color": 39232,  # Green color
+                "thumbnail": {
+                    "url": "https://pepeguild.com/static/pepe_mining_logo.png",
+                }
             }
         ]
     }
