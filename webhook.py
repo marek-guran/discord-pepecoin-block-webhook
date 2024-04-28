@@ -97,17 +97,23 @@ async def main():
                     
                     # Get the timestamp of the first mined block today
                     today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
-                    
+
                     # Find the block counts of all blocks mined today
-                    blocks_today = [block for block, timestamp in mined_blocks.items() if timestamp >= today_start]
-                    
+                    blocks_today = [(int(block), timestamp) for block, timestamp in mined_blocks.items() if timestamp >= today_start]
+
                     # If there are blocks mined today, calculate the number of blocks mined today
                     if blocks_today:
-                        first_block_today = min(map(int, blocks_today))
-                        last_block_today = max(map(int, blocks_today))
+                        # Sort blocks by timestamp
+                        blocks_today.sort(key=lambda x: x[1])
+
+                        # Get the first and the last block mined today
+                        first_block_today = blocks_today[0][0]
+                        last_block_today = blocks_today[-1][0]
+
+                        # Calculate the number of blocks mined today
                         blocks_mined_today = last_block_today - first_block_today
                     else:
-                        blocks_mined_today = 0
+                        blocks_mined_today = 1
                     
                     # Construct message
                     message = f"**Block:** {block_count}\n**New Difficulty:** {formatted_difficulty}\n**Time:** {formatted_time}\n**Blocks Mined Today:** {blocks_mined_today}"
