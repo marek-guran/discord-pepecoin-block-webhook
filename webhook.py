@@ -37,7 +37,7 @@ async def send_to_discord(message):
                 "description": message,
                 "color": 39232,  # Green color
                 "thumbnail": {
-                    "url": "https://pepeguild.com/static/pepe_mining_logo.png",
+                    "url": "https://raw.githubusercontent.com/marek-guran/discord-pepecoin-block-webhook/main/pepe.png",
                 }
             }
         ]
